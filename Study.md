@@ -52,3 +52,34 @@
 - DRegisterとARegisterが用意されている
 - 回路内で完結する値は出力とはならないが、求めるべき値である
 - 中心となるCPUが、コンピュータアーキテクチャ（ハードウェア階層）の核となる
+
+## Ch06
+
+- https://www.youtube.com/watch?v=C8LgvuEBraI Goを使ってみよう
+- gotourをやる
+- ポインタレシーバを使う2つの理由
+  - ひとつは、メソッドがレシーバが指す先の変数を変更するため。main 関数で宣言した Vertex 変数を変更するためには、Scale メソッドはポインタレシーバにする必要がある→ポインタじゃないと変数を変更できない
+  - ふたつに、メソッドの呼び出し毎に変数のコピーを避けるため
+- よく、関数は error 変数を返します。そして、呼び出し元はエラーが nil かどうかを確認することでエラーをハンドル(取り扱い)する
+- https://github.com/hirak/Assembler を読んで写経する
+  - Parser
+    - Scan
+    - scanner.Text()
+    - SplitN
+    - text[0]
+    - HasPrefix
+  - SymbolTable
+    - map[string]int
+  - Assembler
+    - for 条件 {}
+    - strconv.Atoi()
+    - \>>,<<,&：[バイナリ演算](http://golang.jp/tag/go%E8%A8%80%E8%AA%9E%E4%BB%95%E6%A7%98/page/2)
+- ```go test .\projects\06\assembler ``` でテストできた
+- https://godoc.org/github.com/gophersjp/go/src/cmd/go
+- packageはmainでないと実行できない
+- goファイルがあるフォルダで ``` go build ```
+
+
+おまけ
+
+やるべきこととできることがマッチすると大変勉強になる
