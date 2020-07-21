@@ -83,3 +83,37 @@
 おまけ
 
 やるべきこととできることがマッチすると大変勉強になる
+
+## Ch07
+
+- 概要：parserが、vmコマンドの意味を解釈して、asmコードを書くためのcodewriterに伝える
+- 注意：まずはテスト/デバッグにある、XxxVme.tstを提供されているVMエミュレータで読み込みXxx.vmファイルを実行してみると、何をしているかわかる
+- 全てのvmコマンドがスタック上で実行される
+
+実装上のポイント
+
+- iota https://qiita.com/curepine/items/2ae2f6504f0d28016411 enum
+- import p "パス" pはエイリアス
+- switch goでは選択されたcaseのみ実行する。その後のcaseは実行しない
+- Parse()がhasMoreCommandsとadvanceの役になっている
+- SP : Stack Pointer
+- SPは、スタックのアドレスを保持する
+- RAM[0] = sp は、スタックのアドレスを示す
+- Push：SPを1増やす
+- Stack[sp] = x; sp = sp + 1;
+- Pop：SPを1減らす
+- AM,AD,AMDはニーモニック。dest領域に変換されるもの
+- Add命令
+  - まず、アドレスとSPの値をデクリメント
+  - Dに元のSP-1のMを保持
+  - アドレスをデクリメント
+  - Dと元のSP-2のMを足して、元のSP-2のMに設定する
+- RAMの使用法
+  - （使用法）：（アドレス）
+  - スタティック変数：16-255
+  - スタック：256-2047
+  - ヒープ（オブジェクトと配列を格納する）：2048-16383
+- メモリアクセスコマンドのために、セグメントがRAM上に直接マッピングされており、RAM上の場所を専用のレジスタ（R1-R15）とスタティック変数で保持している
+- パス問題。Windowsに対応するため、util.goのPathInfo()について、"/" → separator := string(os.PathSeparator)に変更
+  - https://golang.org/pkg/os/#PathSeparator
+  - https://qiita.com/masakielastic/items/01a4fb691c572dd71a19
