@@ -84,7 +84,7 @@
 
 やるべきこととできることがマッチすると大変勉強になる
 
-## Ch07
+## Ch07-Ch08
 
 - 概要：parserが、vmコマンドの意味を解釈して、asmコードを書くためのcodewriterに伝える
 - 注意：まずはテスト/デバッグにある、XxxVme.tstを提供されているVMエミュレータで読み込みXxx.vmファイルを実行してみると、何をしているかわかる
@@ -117,3 +117,12 @@
 - パス問題。Windowsに対応するため、util.goのPathInfo()について、"/" → separator := string(os.PathSeparator)に変更
   - https://golang.org/pkg/os/#PathSeparator
   - https://qiita.com/masakielastic/items/01a4fb691c572dd71a19
+- 管理者でvm_translator.exeを実行しないと、ファイルが作成できなかったり
+- functionName$label : グローバルでユニークなf$bというシンボルを生成する
+- 初期化処理でSPのMに256（スタックのアドレス）を設定する
+- ROMのアドレスが0から始まるコードセグメント：ブートストラップコード ← コンピュータがブートアップしたときに最初に実行されるコード
+- Sys.initがメインプログラムのメイン関数を呼び出す
+- Sys.initはvmファイルに書かれている
+- WriteComparatorは、ラベルを作って条件を満たす/満たさない場合それぞれの処理を記述している
+- Callでリターンアドレス以下に一通り保持し、Returnで戻す
+- strconvでstringとintを相互変換
