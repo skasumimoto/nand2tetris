@@ -123,6 +123,50 @@
 - ROMのアドレスが0から始まるコードセグメント：ブートストラップコード ← コンピュータがブートアップしたときに最初に実行されるコード
 - Sys.initがメインプログラムのメイン関数を呼び出す
 - Sys.initはvmファイルに書かれている
-- WriteComparatorは、ラベルを作って条件を満たす/満たさない場合それぞれの処理を記述している
+- WriteComparatorは、ラベルを作って、条件を満たす/満たさない場合それぞれの処理を記述している
 - Callでリターンアドレス以下に一通り保持し、Returnで戻す
 - strconvでstringとintを相互変換
+
+## Ch10-Ch11
+
+- コンパイラ ： .jackからTokenizerを生成 → .vmファイルを作成し、書き込みの準備 → CompilationEngineで、Tokenizerを出力ファイルへコンパイル。
+  - Tokenizer ： プログラム構文解析の最初の一歩として、**文字のグループをトークンにまとめる**。**字句解析**と呼ぶタスク。
+    - token : 終端要素。文字列と種類を保持
+      - keywordとsymbolを定数で保持
+    - [Creating a slice with make](https://go-tour-jp.appspot.com/moretypes/13)
+    - [rune is an alias for int32 and is equivalent to int32 in all ways. It is used, by convention, to distinguish character values from integer values.](https://golang.org/src/builtin/builtin.go?h=rune#L92)
+    - varidatorsがidentifierを識別する
+      - [range](https://go-tour-jp.appspot.com/moretypes/16)
+    - 1文字ずつ保持していきトークンになったかどうか判定する
+    - newCharはトークンに追加されていない次の文字。それまでがキーワードでも、次に別のidentifierが来ればキーワードではなくなるためバリデーションを実行する
+    - Tokensにインデックスを持たせて、Nextでインデックスをインクリしている
+  - CompilationEngine ： Tokenizerから入力を受取、構文解析した構造を出力ファイル/ストリームへ出力する。
+    - **プログラム構造ごとにコンパイル**を実行するルーチンを実装する。
+      - compileClass
+        - compileClassVarDec ： クラス変数がある分だけ再帰的に呼び出す
+        - compileClassSubroutineDec ： } が来るまで再帰的に呼び出す
+          - compileParameterList
+          - compileSubroutineBody
+            - compileVarDec
+            - compileStatements
+              - compileLetStatement
+                - push segment index : segment[index]をスタックの上にプッシュする
+                - pop segment index : スタックの一番上のデータをポップし、それをsegment[index]に格納する
+              - compileIfStatement
+              - compileWhileStatement
+                - ラベルの生成
+                - スタック ： ...,x,y,not(←SP)のとき、Not yを戻り値とする → 条件(y)を満たさないとき、whileを抜けることを表している
+                - compileExpression
+                  - compileTerm
+                    - トークンのタイプごとにvmコマンドを生成する
+              - compileDoStatement
+                - compileSubroutineCall
+              - compileReturnStatement
+      - symboltable : シンボルテーブルを管理する
+        - クラステーブルとサブルーチンテーブルに分けて変数を保持する
+    - [defer](https://go-tour-jp.appspot.com/flowcontrol/12)
+    - [...](https://qiita.com/hnakamur/items/c3560a4b780487ef6065)
+    - Ruleは右のように定義されている。type Rule func(s string) bool
+      - Identity(a string)では、Ruleの生成時に渡したaと、Ruleの呼び出し時に渡すbを比較する
+- main
+  - [Glob : パターンマッチ](https://golang.org/pkg/path/filepath/#Glob)
