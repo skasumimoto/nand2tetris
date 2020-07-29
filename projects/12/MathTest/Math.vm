@@ -162,13 +162,6 @@ pop pointer 1
 push that 0
 eq
 return
-function Math.twoToThe 0
-push argument 0
-push static 0
-add
-pop pointer 1
-push that 0
-return
 function Math.multiply 3
 push constant 0
 pop local 0

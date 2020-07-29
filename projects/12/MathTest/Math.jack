@@ -45,10 +45,6 @@ class Math {
         return ((x & twoToThe[j]) = twoToThe[j]);
     }
 
-    function int twoToThe(int i) {
-        return twoToThe[i];
-    }
-
     /** Returns the product of x and y. 
      *  When a Jack compiler detects the multiplication operator '*' in the 
      *  program's code, it handles it by invoking this method. In other words,
